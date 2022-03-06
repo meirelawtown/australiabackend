@@ -1,5 +1,9 @@
 const SaturdayLotto = require("../models/SaturdayLotto.js");
-const mainCsvFromString = require("../utils/csvtojson");
+const {
+  mainCsvFromString,
+  readCsv,
+  getCsvFromUrl,
+} = require("../utils/csvtojson");
 const {
   retornaBolasRepetidas,
   verificaPast,
@@ -8,11 +12,11 @@ const {
 const nomeDoJogo = "saturday";
 class SaturdayLottoController {
   async store(req, res) {
-    if (!req.files.myFile) {
-      return res.status(400).json({ error: "Arquivo inválido." });
-    }
-    const data = req.files.myFile.data.toString().replace(/\"/g, "");
-    const jogos = await mainCsvFromString(nomeDoJogo, data);
+    await getCsvFromUrl(nomeJogo);
+
+    const data = readCsv(nomeJogo);
+
+    const jogos = mainCsvFromString(nomeJogo, data);
     jogos.map(async (item) => {
       let jogo = await SaturdayLotto.findOne(item).catch((e) => {
         if (e) throw e;

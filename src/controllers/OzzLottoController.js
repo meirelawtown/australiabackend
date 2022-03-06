@@ -1,5 +1,9 @@
 const OzzLotto = require("../models/OzzLotto");
-const mainCsvFromString = require("../utils/csvtojson");
+const {
+  mainCsvFromString,
+  readCsv,
+  getCsvFromUrl,
+} = require("../utils/csvtojson");
 const {
   retornaBolasRepetidas,
   verificaPast,
@@ -15,11 +19,11 @@ class OzzLottoController {
   }
 
   async store(req, res) {
-    if (!req.files.myFile) {
-      res.status(400).json({ error: "Arquivo inválido." });
-    }
-    const data = req.files.myFile.data.toString().replace(/\"/g, "");
-    const jogos = await mainCsvFromString(nomeDoJogo, data);
+    await getCsvFromUrl(nomeJogo);
+
+    const data = readCsv(nomeJogo);
+
+    const jogos = mainCsvFromString(nomeJogo, data);
     jogos.map(async (item) => {
       let jogo = await OzzLotto.findOne(item).catch((e) => {
         if (e) throw e;

@@ -1,5 +1,9 @@
 const PowerBallsSchema = require("../models/Pball");
-const mainCsvFromString = require("../utils/csvtojson");
+const {
+  mainCsvFromString,
+  readCsv,
+  getCsvFromUrl,
+} = require("../utils/csvtojson");
 const {
   retornaBolasRepetidas,
   verificaPast,
@@ -13,12 +17,11 @@ class PowerBallController {
     return res.json(orderByNumber);
   }
   async store(req, res) {
-    if (!req.files.myFile) {
-      return res.status(400).json({ error: "Arquivo inválido." });
-    }
+    await getCsvFromUrl(nomeJogo);
 
-    const data = req.files.myFile.data.toString().replace(/\"/g, "");
-    const jogos = await mainCsvFromString(nomeDoJogo, data);
+    const data = readCsv(nomeJogo);
+
+    const jogos = mainCsvFromString(nomeJogo, data);
     jogos.map(async (item) => {
       let jogo = await PowerBallsSchema.findOne(item).catch((e) => {
         if (e) throw e;
