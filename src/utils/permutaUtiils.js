@@ -22,27 +22,27 @@ const findPowerball = async (number) => {
 const findSaturday = async (number) => {
   return await SaturdayLotto.find({ Number: number });
 };
-const findGameByName = async (nomeDoJogo, jogo) => {
-  if (nomeDoJogo === "monday") {
+const findGameByName = async (nomeJogo, jogo) => {
+  if (nomeJogo === "monday") {
     return await findMonday(jogo);
-  } else if (nomeDoJogo === "ozz") {
+  } else if (nomeJogo === "ozz") {
     return await findOzz(jogo);
-  } else if (nomeDoJogo === "wednesday") {
+  } else if (nomeJogo === "wednesday") {
     return await findWednesday(jogo);
-  } else if (nomeDoJogo === "power") {
+  } else if (nomeJogo === "power") {
     return await findPowerball(jogo);
-  } else if (nomeDoJogo === "saturday") {
+  } else if (nomeJogo === "saturday") {
     return await findSaturday(jogo);
   }
 };
 
-const addExport = async (nomeDoJogo, jogo) => {
+const addExport = async (nomeJogo, jogo) => {
   let jogos = jogo;
   let n = [];
   for (let i = 0; i < 5; i++) {
-    const results = await findGameByName(nomeDoJogo, jogo);
-    let p = await verificaPast(nomeDoJogo, results);
-    let f = await verificaFuture(nomeDoJogo, results);
+    const results = await findGameByName(nomeJogo, jogo);
+    let p = await verificaPast(nomeJogo, results);
+    let f = await verificaFuture(nomeJogo, results);
     const { Main1, Main2, Main3, Main4, Main5, Main6, Main7, Supp1, Supp2 } =
       results[0];
     n.push({

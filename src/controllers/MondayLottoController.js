@@ -27,9 +27,11 @@ class MondayLottoController {
     const jogos = mainCsvFromString(nomeJogo, data);
 
     jogos.map(async (item) => {
-      let jogo = await MondayLotto.findOne(item).catch((e) => {
-        if (e) return res.status(400).json({ error: e });
-      });
+      let jogo = await MondayLotto.findOne({ Number: item.Number }).catch(
+        (e) => {
+          if (e) return res.status(400).json({ error: e });
+        }
+      );
       if (!jogo) {
         jogo = await MondayLotto.create(item).catch((e) => {
           if (e) return res.status(400).json({ error: e });
@@ -37,6 +39,7 @@ class MondayLottoController {
       }
     });
     return res.send();
+    return res.status(400);
   }
 
   async balls(req, res) {

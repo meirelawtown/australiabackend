@@ -9,7 +9,7 @@ const {
   verificaPast,
   verificaFuture,
 } = require("../utils/jsontocsv.js");
-const nomeDoJogo = "wednesday";
+const nomeJogo = "wednesday";
 class WednesdayLottoController {
   async index(req, res) {
     const jogos = await WednesdayLotto.find();
@@ -19,7 +19,7 @@ class WednesdayLottoController {
   async balls(req, res) {
     const jogos = await WednesdayLotto.find();
 
-    const repetidas = await retornaBolasRepetidas(nomeDoJogo, jogos);
+    const repetidas = await retornaBolasRepetidas(nomeJogo, jogos);
 
     return res.json({ repetidas });
   }
@@ -30,9 +30,11 @@ class WednesdayLottoController {
 
     const jogos = mainCsvFromString(nomeJogo, data);
     jogos.map(async (item) => {
-      let jogo = await WednesdayLotto.findOne(item).catch((e) => {
-        if (e) throw e;
-      });
+      let jogo = await WednesdayLotto.findOne({ Number: item.Number }).catch(
+        (e) => {
+          if (e) throw e;
+        }
+      );
       if (!jogo) {
         jogo = await WednesdayLotto.create(item).catch((e) => {
           if (e) throw e;
@@ -45,13 +47,13 @@ class WednesdayLottoController {
   async pastBall(req, res) {
     const { id } = req.params;
     const jogo = await WednesdayLotto.find({ Number: id });
-    const result = await verificaPast(nomeDoJogo, jogo);
+    const result = await verificaPast(nomeJogo, jogo);
     res.json(result);
   }
   async futureBall(req, res) {
     const { id } = req.params;
     const jogo = await WednesdayLotto.find({ Number: id });
-    const result = await verificaFuture(nomeDoJogo, jogo);
+    const result = await verificaFuture(nomeJogo, jogo);
     res.json(result);
   }
 }

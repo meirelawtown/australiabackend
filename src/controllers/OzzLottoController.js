@@ -9,7 +9,7 @@ const {
   verificaPast,
   verificaFuture,
 } = require("../utils/jsontocsv.js");
-const nomeDoJogo = "ozz";
+const nomeJogo = "ozz";
 class OzzLottoController {
   async index(req, res) {
     const jogos = await OzzLotto.find();
@@ -25,7 +25,7 @@ class OzzLottoController {
 
     const jogos = mainCsvFromString(nomeJogo, data);
     jogos.map(async (item) => {
-      let jogo = await OzzLotto.findOne(item).catch((e) => {
+      let jogo = await OzzLotto.findOne({ Number: item.Number }).catch((e) => {
         if (e) throw e;
       });
       if (!jogo) {
@@ -39,20 +39,20 @@ class OzzLottoController {
 
   async balls(req, res) {
     const jogos = await OzzLotto.find();
-    const repetidas = await retornaBolasRepetidas(nomeDoJogo, jogos);
+    const repetidas = await retornaBolasRepetidas(nomeJogo, jogos);
 
     return res.json({ repetidas });
   }
   async pastBall(req, res) {
     const { id } = req.params;
     const jogo = await OzzLotto.find({ Number: id });
-    const result = await verificaPast(nomeDoJogo, jogo);
+    const result = await verificaPast(nomeJogo, jogo);
     res.json(result);
   }
   async futureBall(req, res) {
     const { id } = req.params;
     const jogo = await OzzLotto.find({ Number: id });
-    const result = await verificaFuture(nomeDoJogo, jogo);
+    const result = await verificaFuture(nomeJogo, jogo);
     res.json(result);
   }
 }
