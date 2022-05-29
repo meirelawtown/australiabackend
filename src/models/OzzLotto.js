@@ -12,6 +12,7 @@ const OzzLottoSchema = new Schema({
   Main7: String,
   Supp1: String,
   Supp2: String,
+  Supp3: String,
 });
 
 module.exports = model("OzzLotto", OzzLottoSchema);

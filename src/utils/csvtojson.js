@@ -28,6 +28,7 @@ const ozzHeader = [
   "Main7",
   "Supp1",
   "Supp2",
+  "Supp3",
 ];
 const powerHeader = [
   "Number",

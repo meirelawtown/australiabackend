@@ -13,6 +13,7 @@ const ozzHeader = [
   "Main7",
   "Supp1",
   "Supp2",
+  "Supp3",
 ];
 const powerHeader = [
   "Number",
@@ -80,7 +81,14 @@ function verificaPast(jogo, json) {
     })
     .filter((x) => x !== 0);
   const past = fs
-    .readFileSync("./src/assets/past.csv", "utf-8")
+    .readFileSync(
+      jogo === "ozz"
+        ? "./src/assets/ozzpast.csv"
+        : jogo === "power"
+        ? "./src/assets/pbpast.csv"
+        : "./src/assets/past.csv",
+      "utf-8"
+    )
     .split(" ")
     .map((x) => +x)
     .filter((x) => {
@@ -111,7 +119,14 @@ function verificaFuture(jogo, json) {
     .filter((x) => x !== 0);
 
   const past = fs
-    .readFileSync("./src/assets/future.csv", "utf-8")
+    .readFileSync(
+      jogo === "ozz"
+        ? "./src/assets/ozzfuture.csv"
+        : jogo === "power"
+        ? "./src/assets/pbfuture.csv"
+        : "./src/assets/future.csv",
+      "utf-8"
+    )
     .split(" ")
     .map((x) => +x)
     .filter((x) => {

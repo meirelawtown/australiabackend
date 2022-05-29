@@ -11,10 +11,13 @@ class App {
     this.server = express();
     async function handleConnection() {
       mongoose
-        .connect(process.env.URL_MONGO, {
-          useUnifiedTopology: true,
-          useNewUrlParser: true,
-        })
+        .connect(
+          "mongodb+srv://deploy:uploaddeploy@australialotto.qrsru.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+          {
+            useUnifiedTopology: true,
+            useNewUrlParser: true,
+          }
+        )
         .catch((e) => {
           if (e) {
             handleConnection();
