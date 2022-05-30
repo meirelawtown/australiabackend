@@ -30,6 +30,20 @@ const ozzHeader = [
   "Supp2",
   "Supp3",
 ];
+const sflifeHeader = [
+  "Number",
+  "DateTime",
+  "Main1",
+  "Main2",
+  "Main3",
+  "Main4",
+  "Main5",
+  "Main6",
+  "Main7",
+  "empty",
+  "Supp1",
+  "Supp2",
+];
 const powerHeader = [
   "Number",
   "DateTime",
@@ -47,6 +61,8 @@ function mainCsvFromString(name, str) {
   var headerName;
   if (name === "ozz") {
     headerName = ozzHeader;
+  } else if (name === "sflife") {
+    headerName = sflifeHeader;
   } else if (name === "power") {
     headerName = powerHeader;
   } else {
@@ -71,6 +87,8 @@ const getCsvFromUrl = async (nomeJogo) => {
       ? process.env.URL_POWER
       : nomeJogo === "saturday"
       ? process.env.URL_SATURDAY
+      : nomeJogo === "sflife"
+      ? process.env.URL_SFLIFE
       : "";
   try {
     const file = fs.createWriteStream(`${directoryPath}/${nomeJogo}.csv`);

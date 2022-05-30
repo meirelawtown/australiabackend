@@ -1,14 +1,9 @@
-const WednesdayLotto = require("../models/WednesdayLotto");
-const PowerBallsSchema = require("../models/Pball");
-const OzzLotto = require("../models/OzzLotto");
-const SaturdayLotto = require("../models/SaturdayLotto.js");
-const MondayLotto = require("../models/MondayLotto");
-const { verificaPast, verificaFuture } = require("../utils/jsontocsv.js");
 const {
   findMonday,
   findWednesday,
   findPowerball,
   findSaturday,
+  findsfLife,
   findOzz,
   addExport,
   validarBody,
@@ -17,19 +12,21 @@ const {
 class PermutaController {
   async saturday(req, res) {
     if (!validarBody(req)) return res.status(400).send("Dados inválidos.");
-    const { monday, ozz, wednesday, powerball, saturday } = req.body;
+    const { monday, ozz, wednesday, powerball, saturday, sfLife } = req.body;
     const mondayNumber = await findMonday(monday, res);
     const ozzNumber = await findOzz(ozz);
     const wednesdayNumber = await findWednesday(wednesday);
     const powerNumber = await findPowerball(powerball);
     const saturdayNumber = await findSaturday(saturday);
+    const sfLifeNumber = await findsfLife(sfLife);
 
     if (
       mondayNumber.length === 0 ||
       ozzNumber.length === 0 ||
       wednesdayNumber.length === 0 ||
       powerNumber.length === 0 ||
-      saturdayNumber.length === 0
+      saturdayNumber.length === 0 ||
+      sfLifeNumber.length === 0
     ) {
       return res.status(400).send("Dados inválidos.");
     }
@@ -41,25 +38,27 @@ class PermutaController {
       wednesday: wednesdayNumber,
       powerball: powerNumber,
       saturday: saturdayNumber,
+      sfLife: sfLifeNumber,
       export: exp,
     };
     return res.json({ jogos });
   }
   async monday(req, res) {
     if (!validarBody(req)) return res.status(400).send("Dados inválidos.");
-    const { monday, ozz, wednesday, powerball, saturday } = req.body;
+    const { monday, ozz, wednesday, powerball, saturday, sfLife } = req.body;
     const mondayNumber = await findMonday(monday, res);
     const ozzNumber = await findOzz(ozz);
     const wednesdayNumber = await findWednesday(wednesday);
     const powerNumber = await findPowerball(powerball);
     const saturdayNumber = await findSaturday(saturday);
-
+    const sfLifeNumber = await findsfLife(sfLife);
     if (
       mondayNumber.length === 0 ||
       ozzNumber.length === 0 ||
       wednesdayNumber.length === 0 ||
       powerNumber.length === 0 ||
-      saturdayNumber.length === 0
+      saturdayNumber.length === 0 ||
+      sfLifeNumber.length === 0
     ) {
       return res.status(400).send("Dados inválidos.");
     }
@@ -71,25 +70,28 @@ class PermutaController {
       wednesday: wednesdayNumber,
       powerball: powerNumber,
       saturday: saturdayNumber,
+      sfLife: sfLifeNumber,
       export: exp,
     };
     return res.json({ jogos });
   }
   async wednesday(req, res) {
     if (!validarBody(req)) return res.status(400).send("Dados inválidos.");
-    const { monday, ozz, wednesday, powerball, saturday } = req.body;
+    const { monday, ozz, wednesday, powerball, saturday, sfLife } = req.body;
     const mondayNumber = await findMonday(monday, res);
     const ozzNumber = await findOzz(ozz);
     const wednesdayNumber = await findWednesday(wednesday);
     const powerNumber = await findPowerball(powerball);
     const saturdayNumber = await findSaturday(saturday);
+    const sfLifeNumber = await findsfLife(sfLife);
 
     if (
       mondayNumber.length === 0 ||
       ozzNumber.length === 0 ||
       wednesdayNumber.length === 0 ||
       powerNumber.length === 0 ||
-      saturdayNumber.length === 0
+      saturdayNumber.length === 0 ||
+      sfLifeNumber.length === 0
     ) {
       return res.status(400).send("Dados inválidos.");
     }
@@ -101,25 +103,28 @@ class PermutaController {
       wednesday: wednesdayNumber,
       powerball: powerNumber,
       saturday: saturdayNumber,
+      sfLife: sfLifeNumber,
       export: exp,
     };
     return res.json({ jogos });
   }
   async ozz(req, res) {
     if (!validarBody(req)) return res.status(400).send("Dados inválidos.");
-    const { monday, ozz, wednesday, powerball, saturday } = req.body;
+    const { monday, ozz, wednesday, powerball, saturday, sfLife } = req.body;
     const mondayNumber = await findMonday(monday, res);
     const ozzNumber = await findOzz(ozz);
     const wednesdayNumber = await findWednesday(wednesday);
     const powerNumber = await findPowerball(powerball);
     const saturdayNumber = await findSaturday(saturday);
+    const sfLifeNumber = await findsfLife(sfLife);
 
     if (
       mondayNumber.length === 0 ||
       ozzNumber.length === 0 ||
       wednesdayNumber.length === 0 ||
       powerNumber.length === 0 ||
-      saturdayNumber.length === 0
+      saturdayNumber.length === 0 ||
+      sfLifeNumber.length === 0
     ) {
       return res.status(400).send("Dados inválidos.");
     }
@@ -131,25 +136,28 @@ class PermutaController {
       wednesday: wednesdayNumber,
       powerball: powerNumber,
       saturday: saturdayNumber,
+      sfLife: sfLifeNumber,
       export: exp,
     };
     return res.json({ jogos });
   }
   async powerball(req, res) {
     if (!validarBody(req)) return res.status(400).send("Dados inválidos.");
-    const { monday, ozz, wednesday, powerball, saturday } = req.body;
+    const { monday, ozz, wednesday, powerball, saturday, sfLife } = req.body;
     const mondayNumber = await findMonday(monday, res);
     const ozzNumber = await findOzz(ozz);
     const wednesdayNumber = await findWednesday(wednesday);
     const powerNumber = await findPowerball(powerball);
     const saturdayNumber = await findSaturday(saturday);
+    const sfLifeNumber = await findsfLife(sfLife);
 
     if (
       mondayNumber.length === 0 ||
       ozzNumber.length === 0 ||
       wednesdayNumber.length === 0 ||
       powerNumber.length === 0 ||
-      saturdayNumber.length === 0
+      saturdayNumber.length === 0 ||
+      sfLifeNumber.length === 0
     ) {
       return res.status(400).send("Dados inválidos.");
     }
@@ -161,6 +169,40 @@ class PermutaController {
       wednesday: wednesdayNumber,
       powerball: powerNumber,
       saturday: saturdayNumber,
+      sfLife: sfLifeNumber,
+      export: exp,
+    };
+    return res.json({ jogos });
+  }
+  async sfLife(req, res) {
+    if (!validarBody(req)) return res.status(400).send("Dados inválidos.");
+    const { monday, ozz, wednesday, powerball, saturday, sfLife } = req.body;
+    const mondayNumber = await findMonday(monday, res);
+    const ozzNumber = await findOzz(ozz);
+    const wednesdayNumber = await findWednesday(wednesday);
+    const powerNumber = await findPowerball(powerball);
+    const saturdayNumber = await findSaturday(saturday);
+    const sfLifeNumber = await findsfLife(sfLife);
+
+    if (
+      mondayNumber.length === 0 ||
+      ozzNumber.length === 0 ||
+      wednesdayNumber.length === 0 ||
+      powerNumber.length === 0 ||
+      saturdayNumber.length === 0 ||
+      sfLifeNumber.length === 0
+    ) {
+      return res.status(400).send("Dados inválidos.");
+    }
+    let exp = await addExport("sfLife", sfLife);
+
+    let jogos = {
+      monday: mondayNumber,
+      ozz: ozzNumber,
+      wednesday: wednesdayNumber,
+      powerball: powerNumber,
+      saturday: saturdayNumber,
+      sfLife: sfLifeNumber,
       export: exp,
     };
     return res.json({ jogos });

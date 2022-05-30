@@ -15,6 +15,19 @@ const ozzHeader = [
   "Supp2",
   "Supp3",
 ];
+const sflifeHeader = [
+  "Number",
+  "DateTime",
+  "Main1",
+  "Main2",
+  "Main3",
+  "Main4",
+  "Main5",
+  "Main6",
+  "Main7",
+  "Supp1",
+  "Supp2",
+];
 const powerHeader = [
   "Number",
   "DateTime",
@@ -86,6 +99,8 @@ function verificaPast(jogo, json) {
         ? "./src/assets/ozzpast.csv"
         : jogo === "power"
         ? "./src/assets/pbpast.csv"
+        : jogo === "sflife"
+        ? "./src/assets/sflpast.csv"
         : "./src/assets/past.csv",
       "utf-8"
     )
@@ -124,6 +139,8 @@ function verificaFuture(jogo, json) {
         ? "./src/assets/ozzfuture.csv"
         : jogo === "power"
         ? "./src/assets/pbfuture.csv"
+        : jogo === "sflife"
+        ? "./src/assets/sflpast.csv"
         : "./src/assets/future.csv",
       "utf-8"
     )
@@ -142,6 +159,8 @@ function verificaFuture(jogo, json) {
 function setJson2CsvHeader(jogo) {
   if (jogo === "ozz") {
     json2csv = new Parser({ fields: ozzHeader });
+  } else if (jogo === "sflife") {
+    json2csv = new Parser({ fields: sflifeHeader });
   } else if (jogo === "power") {
     json2csv = new Parser({ fields: powerHeader });
   } else {

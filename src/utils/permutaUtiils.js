@@ -2,6 +2,7 @@ const WednesdayLotto = require("../models/WednesdayLotto");
 const PowerBallsSchema = require("../models/Pball");
 const OzzLotto = require("../models/OzzLotto");
 const SaturdayLotto = require("../models/SaturdayLotto.js");
+const SFLife = require("../models/SFLife.js");
 const MondayLotto = require("../models/MondayLotto");
 const { verificaPast, verificaFuture } = require("../utils/jsontocsv.js");
 
@@ -22,6 +23,9 @@ const findPowerball = async (number) => {
 const findSaturday = async (number) => {
   return await SaturdayLotto.find({ Number: number });
 };
+const findSFLife = async (number) => {
+  return await SFLife.find({ Number: number });
+};
 const findGameByName = async (nomeJogo, jogo) => {
   if (nomeJogo === "monday") {
     return await findMonday(jogo);
@@ -33,6 +37,8 @@ const findGameByName = async (nomeJogo, jogo) => {
     return await findPowerball(jogo);
   } else if (nomeJogo === "saturday") {
     return await findSaturday(jogo);
+  } else if (nomeJogo === "sflife") {
+    return await findSFLife(jogo);
   }
 };
 
@@ -64,8 +70,8 @@ const addExport = async (nomeJogo, jogo) => {
   return n;
 };
 const validarBody = (req) => {
-  const { monday, ozz, wednesday, powerball, saturday } = req.body;
-  if (!monday || !ozz || !wednesday || !powerball || !saturday) {
+  const { monday, ozz, wednesday, powerball, saturday, sfLife } = req.body;
+  if (!monday || !ozz || !wednesday || !powerball || !saturday || !sfLife) {
     return false;
   }
   return true;
@@ -76,6 +82,7 @@ module.exports = {
   findWednesday,
   findPowerball,
   findSaturday,
+  findSFLife,
   addExport,
   validarBody,
 };

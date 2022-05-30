@@ -5,6 +5,7 @@ const routes = new Router();
 const SaturdayLottoController = require("../controllers/SaturdayLottoController");
 const MondayLottoController = require("../controllers/MondayLottoController");
 const OzzLottoController = require("../controllers/OzzLottoController");
+const SFLifeController = require("../controllers/SFLifeController");
 const WednesdayLottoController = require("../controllers/WednesdayLottoController");
 const PowerballLottoController = require("../controllers/PowerballController");
 const PermutaController = require("../controllers/PermutaController");
@@ -26,6 +27,12 @@ routes.get("/ozzlotto", OzzLottoController.index);
 routes.get("/ozzlotto/repetidas", OzzLottoController.balls);
 routes.get("/ozzlottopast/:id", OzzLottoController.pastBall);
 routes.get("/ozzlottofuture/:id", OzzLottoController.futureBall);
+
+routes.post("/sflife", SFLifeController.store);
+routes.get("/sflife", SFLifeController.index);
+routes.get("/sflife/repetidas", SFLifeController.balls);
+routes.get("/sflifepast/:id", SFLifeController.pastBall);
+routes.get("/sflifefuture/:id", SFLifeController.futureBall);
 
 routes.post("/wednesdaylotto", WednesdayLottoController.store);
 routes.get("/wednesdaylotto", WednesdayLottoController.index);
