@@ -14,7 +14,7 @@ class SFLifeController {
   async index(req, res) {
     let query = { Number: { $gt: "2400" } };
 
-    const jogos = await SFLife.find(query).sort({ Number: -1 });
+    const jogos = await SFLife.find(query).sort({ Number: -1 }).limit(20);
     // const jogos = await SFLife.find();
 
     // let orderByNumber = jogos.sort((a, b) => a.Number - b.Number).reverse();

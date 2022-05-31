@@ -14,7 +14,9 @@ class PowerBallController {
   async index(req, res) {
     let query = { Number: { $gt: "1300" } };
 
-    const jogos = await PowerBallsSchema.find(query).sort({ Number: -1 });
+    const jogos = await PowerBallsSchema.find(query)
+      .sort({ Number: -1 })
+      .limit(20);
     // const jogos = await PowerBallsSchema.find();
     // let orderByNumber = jogos.sort((a, b) => a.Number - b.Number).reverse();
     return res.json(jogos);

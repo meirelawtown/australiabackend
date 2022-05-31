@@ -13,7 +13,7 @@ const nomeJogo = "ozz";
 class OzzLottoController {
   async index(req, res) {
     let query = { Number: { $gt: "1400" } };
-    const jogos = await OzzLotto.find(query).sort({ Number: -1 });
+    const jogos = await OzzLotto.find(query).sort({ Number: -1 }).limit(20);
 
     // const jogos = await OzzLotto.find();
 

@@ -14,7 +14,9 @@ class WednesdayLottoController {
   async index(req, res) {
     let query = { Number: { $gt: "4100" } };
 
-    const jogos = await WednesdayLotto.find(query).sort({ Number: -1 });
+    const jogos = await WednesdayLotto.find(query)
+      .sort({ Number: -1 })
+      .limit(20);
     // const jogos = await WednesdayLotto.find();
     // const orderByNuber = jogos.sort((a, b) => a.Number - b.Number).reverse();
     return res.json(jogos);

@@ -15,7 +15,7 @@ class MondayLottoController {
   async index(req, res) {
     let query = { Number: { $gt: "4100" } };
 
-    const jogos = await MondayLotto.find(query).sort({ Number: -1 });
+    const jogos = await MondayLotto.find(query).sort({ Number: -1 }).limit(20);
 
     // console.log(jogos);
     // let orderByNumber = jogos.sort((a, b) => a.Number - b.Number).reverse();
@@ -57,6 +57,7 @@ class MondayLottoController {
 
   async pastBall(req, res) {
     const { id } = req.params;
+    console.log(id);
     const jogo = await MondayLotto.find({ Number: id });
     const result = await verificaPast(nomeJogo, jogo);
     res.json(result);
