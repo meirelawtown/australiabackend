@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const OzzLottoSchema = new Schema({
-  Number: String,
+  Number: Number,
   DateTime: String,
   Main1: String,
   Main2: String,

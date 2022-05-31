@@ -12,9 +12,12 @@ const {
 const nomeJogo = "power";
 class PowerBallController {
   async index(req, res) {
-    const jogos = await PowerBallsSchema.find();
-    let orderByNumber = jogos.sort((a, b) => a.Number - b.Number).reverse();
-    return res.json(orderByNumber);
+    let query = { Number: { $gt: "1300" } };
+
+    const jogos = await PowerBallsSchema.find(query).sort({ Number: -1 });
+    // const jogos = await PowerBallsSchema.find();
+    // let orderByNumber = jogos.sort((a, b) => a.Number - b.Number).reverse();
+    return res.json(jogos);
   }
   async store(req, res) {
     await getCsvFromUrl(nomeJogo);
@@ -28,7 +31,7 @@ class PowerBallController {
           if (e) throw e;
         }
       );
-      if (!jogo) {
+      if (!jogo && item.Number > 1300) {
         jogo = await PowerBallsSchema.create(item).catch((e) => {
           if (e) throw e;
         });

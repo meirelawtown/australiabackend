@@ -13,10 +13,14 @@ const nomeJogo = "monday";
 
 class MondayLottoController {
   async index(req, res) {
-    const jogos = await MondayLotto.find();
-    let orderByNumber = jogos.sort((a, b) => a.Number - b.Number).reverse();
+    let query = { Number: { $gt: "4100" } };
 
-    return res.json(orderByNumber);
+    const jogos = await MondayLotto.find(query).sort({ Number: -1 });
+
+    // console.log(jogos);
+    // let orderByNumber = jogos.sort((a, b) => a.Number - b.Number).reverse();
+
+    return res.json(jogos);
   }
 
   async store(req, res) {
@@ -32,7 +36,7 @@ class MondayLottoController {
           if (e) return res.status(400).json({ error: e });
         }
       );
-      if (!jogo) {
+      if (!jogo && item.Number > 4000) {
         jogo = await MondayLotto.create(item).catch((e) => {
           if (e) return res.status(400).json({ error: e });
         });

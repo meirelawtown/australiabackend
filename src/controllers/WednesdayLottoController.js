@@ -12,9 +12,12 @@ const {
 const nomeJogo = "wednesday";
 class WednesdayLottoController {
   async index(req, res) {
-    const jogos = await WednesdayLotto.find();
-    const orderByNuber = jogos.sort((a, b) => a.Number - b.Number).reverse();
-    return res.json(orderByNuber);
+    let query = { Number: { $gt: "4100" } };
+
+    const jogos = await WednesdayLotto.find(query).sort({ Number: -1 });
+    // const jogos = await WednesdayLotto.find();
+    // const orderByNuber = jogos.sort((a, b) => a.Number - b.Number).reverse();
+    return res.json(jogos);
   }
   async balls(req, res) {
     const jogos = await WednesdayLotto.find();
@@ -35,7 +38,7 @@ class WednesdayLottoController {
           if (e) throw e;
         }
       );
-      if (!jogo) {
+      if (!jogo && item.Number > 4000) {
         jogo = await WednesdayLotto.create(item).catch((e) => {
           if (e) throw e;
         });

@@ -23,7 +23,7 @@ class SaturdayLottoController {
           if (e) throw e;
         }
       );
-      if (!jogo) {
+      if (!jogo && item.Number > 4000) {
         jogo = await SaturdayLotto.create(item).catch((e) => {
           if (e) throw e;
         });
@@ -44,13 +44,10 @@ class SaturdayLottoController {
   }
 
   async index(req, res) {
-    const jogo = await SaturdayLotto.find().catch((e) => {
-      if (e) throw e;
-    });
-    let orderByNumber = await jogo
-      .sort((a, b) => a.Number - b.Number)
-      .reverse();
-    return res.json(orderByNumber);
+    let query = { Number: { $gt: "4200" } };
+
+    const jogos = await SaturdayLotto.find(query).sort({ Number: -1 });
+    return res.json(jogos);
   }
 
   async pastBall(req, res) {

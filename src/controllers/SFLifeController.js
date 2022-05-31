@@ -12,10 +12,13 @@ const {
 const nomeJogo = "sflife";
 class SFLifeController {
   async index(req, res) {
-    const jogos = await SFLife.find();
+    let query = { Number: { $gt: "2400" } };
 
-    let orderByNumber = jogos.sort((a, b) => a.Number - b.Number).reverse();
-    return res.json(orderByNumber);
+    const jogos = await SFLife.find(query).sort({ Number: -1 });
+    // const jogos = await SFLife.find();
+
+    // let orderByNumber = jogos.sort((a, b) => a.Number - b.Number).reverse();
+    return res.json(jogos);
   }
 
   async store(req, res) {
@@ -28,7 +31,7 @@ class SFLifeController {
       let jogo = await SFLife.findOne({ Number: item.Number }).catch((e) => {
         if (e) throw e;
       });
-      if (!jogo) {
+      if (!jogo && item.Number > 2400) {
         jogo = await SFLife.create(item).catch((e) => {
           if (e) throw e;
         });

@@ -12,10 +12,13 @@ const {
 const nomeJogo = "ozz";
 class OzzLottoController {
   async index(req, res) {
-    const jogos = await OzzLotto.find();
+    let query = { Number: { $gt: "1400" } };
+    const jogos = await OzzLotto.find(query).sort({ Number: -1 });
 
-    let orderByNumber = jogos.sort((a, b) => a.Number - b.Number).reverse();
-    return res.json(orderByNumber);
+    // const jogos = await OzzLotto.find();
+
+    // let orderByNumber = jogos.sort((a, b) => a.Number - b.Number).reverse();
+    return res.json(jogos);
   }
 
   async store(req, res) {
@@ -28,7 +31,7 @@ class OzzLottoController {
       let jogo = await OzzLotto.findOne({ Number: item.Number }).catch((e) => {
         if (e) throw e;
       });
-      if (!jogo) {
+      if (!jogo && item.Number > 1400) {
         jogo = await OzzLotto.create(item).catch((e) => {
           if (e) throw e;
         });
