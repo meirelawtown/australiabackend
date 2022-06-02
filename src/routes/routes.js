@@ -47,6 +47,7 @@ routes.get("/powerballlottopast/:id", PowerballLottoController.pastBall);
 routes.get("/powerballlottofuture/:id", PowerballLottoController.futureBall);
 
 routes.post("/permuta/saturday", PermutaController.saturday);
+routes.post("/permuta/obterwc", PermutaController.obterwc);
 routes.post("/permuta/monday", PermutaController.monday);
 routes.post("/permuta/wednesday", PermutaController.wednesday);
 routes.post("/permuta/ozz", PermutaController.ozz);

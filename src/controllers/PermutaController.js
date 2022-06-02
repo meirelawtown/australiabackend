@@ -1,15 +1,26 @@
 const {
+  verificaPastJogos,
+  verificaFuturoJogos,
+} = require("../utils/jsontocsv.js");
+const {
   findMonday,
   findWednesday,
   findPowerball,
   findSaturday,
-  findsfLife,
+  findSFLife,
   findOzz,
   addExport,
   validarBody,
 } = require("../utils/permutaUtiils.js");
 
 class PermutaController {
+  async obterwc(req, res) {
+    let { name, winCombination, game } = req.body;
+
+    let passado = verificaPastJogos(name, game, winCombination);
+    let futuro = verificaFuturoJogos(name, game, winCombination);
+    return res.json({ futuro, passado });
+  }
   async saturday(req, res) {
     if (!validarBody(req)) return res.status(400).send("Dados inválidos.");
     const { monday, ozz, wednesday, powerball, saturday, sfLife } = req.body;
@@ -18,7 +29,7 @@ class PermutaController {
     const wednesdayNumber = await findWednesday(wednesday);
     const powerNumber = await findPowerball(powerball);
     const saturdayNumber = await findSaturday(saturday);
-    const sfLifeNumber = await findsfLife(sfLife);
+    const sfLifeNumber = await findSFLife(sfLife);
 
     if (
       mondayNumber.length === 0 ||
@@ -31,17 +42,17 @@ class PermutaController {
       return res.status(400).send("Dados inválidos.");
     }
     let exp = await addExport("saturday", saturday);
-
-    let jogos = {
-      monday: mondayNumber,
-      ozz: ozzNumber,
-      wednesday: wednesdayNumber,
-      powerball: powerNumber,
-      saturday: saturdayNumber,
-      sfLife: sfLifeNumber,
-      export: exp,
-    };
-    return res.json({ jogos });
+    // let jogos = {
+    //   monday: mondayNumber,
+    //   ozz: ozzNumber,
+    //   wednesday: wednesdayNumber,
+    //   powerball: powerNumber,
+    //   saturday: saturdayNumber,
+    //   sfLife: sfLifeNumber,
+    //   export: exp,
+    // };
+    return res.status(400).send("Dados inválidos.");
+    // return res.json({ jogos });
   }
   async monday(req, res) {
     if (!validarBody(req)) return res.status(400).send("Dados inválidos.");
@@ -51,7 +62,7 @@ class PermutaController {
     const wednesdayNumber = await findWednesday(wednesday);
     const powerNumber = await findPowerball(powerball);
     const saturdayNumber = await findSaturday(saturday);
-    const sfLifeNumber = await findsfLife(sfLife);
+    const sfLifeNumber = await findSFLife(sfLife);
     if (
       mondayNumber.length === 0 ||
       ozzNumber.length === 0 ||
@@ -83,7 +94,7 @@ class PermutaController {
     const wednesdayNumber = await findWednesday(wednesday);
     const powerNumber = await findPowerball(powerball);
     const saturdayNumber = await findSaturday(saturday);
-    const sfLifeNumber = await findsfLife(sfLife);
+    const sfLifeNumber = await findSFLife(sfLife);
 
     if (
       mondayNumber.length === 0 ||
@@ -116,7 +127,7 @@ class PermutaController {
     const wednesdayNumber = await findWednesday(wednesday);
     const powerNumber = await findPowerball(powerball);
     const saturdayNumber = await findSaturday(saturday);
-    const sfLifeNumber = await findsfLife(sfLife);
+    const sfLifeNumber = await findSFLife(sfLife);
 
     if (
       mondayNumber.length === 0 ||
@@ -149,7 +160,7 @@ class PermutaController {
     const wednesdayNumber = await findWednesday(wednesday);
     const powerNumber = await findPowerball(powerball);
     const saturdayNumber = await findSaturday(saturday);
-    const sfLifeNumber = await findsfLife(sfLife);
+    const sfLifeNumber = await findSFLife(sfLife);
 
     if (
       mondayNumber.length === 0 ||
@@ -182,7 +193,7 @@ class PermutaController {
     const wednesdayNumber = await findWednesday(wednesday);
     const powerNumber = await findPowerball(powerball);
     const saturdayNumber = await findSaturday(saturday);
-    const sfLifeNumber = await findsfLife(sfLife);
+    const sfLifeNumber = await findSFLife(sfLife);
 
     if (
       mondayNumber.length === 0 ||

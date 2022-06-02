@@ -61,6 +61,7 @@ class SaturdayLottoController {
   async futureBall(req, res) {
     const { id } = req.params;
     const jogo = await SaturdayLotto.find({ Number: id });
+
     const result = await verificaFuture(nomeJogo, jogo);
     res.json(result);
   }

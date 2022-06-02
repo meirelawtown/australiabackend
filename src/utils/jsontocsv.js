@@ -1,5 +1,6 @@
 const { Parser } = require("json2csv");
 const fs = require("fs");
+
 var json2csv;
 const ozzHeader = [
   "Number",
@@ -74,85 +75,61 @@ function intersection(csv, arr) {
   return _intersection;
 }
 
-function compareTwoArray(csv, myArr) {
-  return myArr.filter((arr) => intersection(csv, arr).size >= 4);
+function compareTwoArray(csv, myArr, size) {
+  return myArr.filter((arr) => intersection(csv, arr).size >= size);
 }
 
+function verificaPastJogos(jogo, json, winCombination) {
+  setJson2CsvHeader(jogo);
+  let size = selecionarSize(winCombination);
+  let csvJsonEntrada = converterJsonParaCsv(json);
+  let csvPassado = obterArquivoCsvPassadoOuFuturo(jogo, "passado");
+  var valueToSplice = jogo === "power" ? 7 : 6;
+  const arr = spliceLongAr(valueToSplice, csvPassado);
+  let result = compareTwoArray(csvJsonEntrada, arr, size);
+  return winningCombinantionValidator(
+    jogo,
+    csvJsonEntrada,
+    result,
+    winCombination
+  );
+}
+function verificaFuturoJogos(jogo, json, winCombination) {
+  setJson2CsvHeader(jogo);
+  let size = selecionarSize(winCombination);
+  let csvJsonEntrada = converterJsonParaCsv(json);
+  let csvFuturo = obterArquivoCsvPassadoOuFuturo(jogo, "futuro");
+  var valueToSplice = jogo === "power" ? 7 : 6;
+  const arr = spliceLongAr(valueToSplice, csvFuturo);
+  let result = compareTwoArray(csvJsonEntrada, arr, size);
+  return winningCombinantionValidator(
+    jogo,
+    csvJsonEntrada,
+    result,
+    winCombination
+  );
+}
 function verificaPast(jogo, json) {
   setJson2CsvHeader(jogo);
-  const csv = json2csv
-    .parse(json)
-    .replace(/"/g, "")
-    .replace(/,/g, " ")
-    .replace(/\r/g, " ")
-    .replace(/\n/g, " ")
-    .replace(/'/g, "")
-    .split(" ")
-    .map((x) => +x)
-    .filter((x) => {
-      return !Number.isNaN(x);
-    })
-    .filter((x) => x !== 0);
-  const past = fs
-    .readFileSync(
-      jogo === "ozz"
-        ? "./src/assets/ozzpast.csv"
-        : jogo === "power"
-        ? "./src/assets/pbpast.csv"
-        : jogo === "sflife"
-        ? "./src/assets/sflpast.csv"
-        : "./src/assets/past.csv",
-      "utf-8"
-    )
-    .split(" ")
-    .map((x) => +x)
-    .filter((x) => {
-      return !Number.isNaN(x);
-    })
-    .filter((x) => x !== 0);
+  const csv = converterJsonParaCsv(json);
+
+  const past = obterArquivoCsvPassadoOuFuturo(jogo, "passado");
   var valueToSplice = jogo === "power" ? 7 : 6;
   const arr = spliceLongAr(valueToSplice, past);
 
-  let result = compareTwoArray(csv, arr);
+  let result = compareTwoArray(csv, arr, 4);
   return result;
 }
 
 function verificaFuture(jogo, json) {
   setJson2CsvHeader(jogo);
-  const csv = json2csv
-    .parse(json)
-    .replace(/"/g, "")
-    .replace(/,/g, " ")
-    .replace(/\r/g, " ")
-    .replace(/\n/g, " ")
-    .replace(/'/g, "")
-    .split(" ")
-    .map((x) => +x)
-    .filter((x) => {
-      return !Number.isNaN(x);
-    })
-    .filter((x) => x !== 0);
+  const csv = converterJsonParaCsv(json);
 
-  const past = fs
-    .readFileSync(
-      jogo === "ozz"
-        ? "./src/assets/ozzfuture.csv"
-        : jogo === "power"
-        ? "./src/assets/pbfuture.csv"
-        : jogo === "sflife"
-        ? "./src/assets/sflpast.csv"
-        : "./src/assets/future.csv",
-      "utf-8"
-    )
-    .split(" ")
-    .map((x) => +x)
-    .filter((x) => {
-      return !Number.isNaN(x);
-    })
-    .filter((x) => x !== 0);
+  const future = obterArquivoCsvPassadoOuFuturo(jogo, "future");
+  var valueToSplice = jogo === "power" ? 7 : 6;
 
-  const arr = spliceLongAr(6, past);
-  let result = compareTwoArray(csv, arr);
+  const arr = spliceLongAr(valueToSplice, future);
+  let result = compareTwoArray(csv, arr, 4);
   return result;
 }
 
@@ -194,5 +171,141 @@ function retornaBolasRepetidas(jogo, json) {
 
   return multiples;
 }
-
-module.exports = { retornaBolasRepetidas, verificaPast, verificaFuture };
+function converterJsonParaCsv(json) {
+  return json2csv
+    .parse(json)
+    .replace(/"/g, "")
+    .replace(/,/g, " ")
+    .replace(/\r/g, " ")
+    .replace(/\n/g, " ")
+    .replace(/'/g, "")
+    .split(" ")
+    .map((x) => +x)
+    .filter((x) => {
+      return !Number.isNaN(x);
+    })
+    .filter((x) => x !== 0);
+}
+function obterArquivoCsvPassadoOuFuturo(jogo, isPast) {
+  let nomeDoArquivo;
+  if (isPast === "passado") {
+    nomeDoArquivo =
+      jogo === "ozz"
+        ? "./src/assets/ozzpast.csv"
+        : jogo === "power"
+        ? "./src/assets/pbpast.csv"
+        : jogo === "sflife"
+        ? "./src/assets/sflpast.csv"
+        : "./src/assets/past.csv";
+  } else {
+    nomeDoArquivo =
+      jogo === "ozz"
+        ? "./src/assets/ozzfuture.csv"
+        : jogo === "power"
+        ? "./src/assets/pbfuture.csv"
+        : jogo === "sflife"
+        ? "./src/assets/sflpast.csv"
+        : "./src/assets/future.csv";
+  }
+  return fs
+    .readFileSync(nomeDoArquivo, "utf-8")
+    .split(" ")
+    .map((x) => +x)
+    .filter((x) => {
+      return !Number.isNaN(x);
+    })
+    .filter((x) => x !== 0);
+}
+function winningCombinantionValidator(
+  jogo,
+  myArray,
+  arrayList,
+  winCombination
+) {
+  let result;
+  switch (winCombination.toLowerCase()) {
+    case "1+2":
+    case "2+2":
+    case "4+2":
+    case "5+2":
+    case "6+2":
+      result = filtrarPeloMaisDois(arrayList, myArray);
+      break;
+    case "2+1":
+    case "3+1":
+    case "4+1":
+    case "5+1":
+    case "5+1":
+    case "6+1":
+      result =
+        jogo === "ozz"
+          ? filtrarPeloMaisUmOzz(arrayList, myArray)
+          : filtrarPeloMaisUm(arrayList, myArray);
+      break;
+    default:
+      result = arrayList;
+      break;
+  }
+  return result;
+}
+function selecionarSize(winCombination) {
+  switch (winCombination) {
+    case "1+2":
+    case "2+1":
+      return 3;
+    case "3+1":
+    case "2+2":
+    case "4":
+      return 4;
+    case "3+2":
+    case "4+1":
+    case "5":
+      return 5;
+    default:
+      return 6;
+  }
+}
+function filtrarPeloMaisDois(arrayList, myArray) {
+  return arrayList.filter((array) => {
+    if (
+      array.includes(myArray[myArray.length - 1]) &&
+      array.includes(myArray[myArray.length - 2])
+    )
+      return true;
+    else return false;
+  });
+}
+function filtrarPeloMaisUm(arrayList, myArray) {
+  return arrayList.filter((array) => {
+    if (
+      array.includes(myArray[myArray.length - 1]) ||
+      array.includes(myArray[myArray.length - 2])
+    )
+      return true;
+    else return false;
+  });
+}
+function filtrarPeloMaisUmOzz(arrayList, myArray) {
+  return arrayList.filter((array) => {
+    if (
+      array.includes(myArray[myArray.length - 1]) ||
+      array.includes(myArray[myArray.length - 2]) ||
+      array.includes(myArray[myArray.length - 3])
+    )
+      return true;
+    else return false;
+  });
+}
+function filtrarPeloMaisUmPB(arrayList, myArray) {
+  return arrayList.filter((array) => {
+    if (array[array.length - 1] === myArray[myArray.length - 1]) return true;
+    else return false;
+  });
+}
+module.exports = {
+  retornaBolasRepetidas,
+  verificaPast,
+  verificaFuture,
+  verificaPastJogos,
+  verificaFuturoJogos,
+};
