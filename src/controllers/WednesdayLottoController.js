@@ -35,15 +35,17 @@ class WednesdayLottoController {
 
     const jogos = mainCsvFromString(nomeJogo, data);
     jogos.map(async (item) => {
-      let jogo = await WednesdayLotto.findOne({ Number: item.Number }).catch(
-        (e) => {
-          if (e) throw e;
+      if (item.Number > 4000) {
+        let jogo = await WednesdayLotto.findOne({ Number: item.Number }).catch(
+          (e) => {
+            if (e) return res.status(400).json({ error: e });
+          }
+        );
+        if (!jogo) {
+          jogo = await WednesdayLotto.create(item).catch((e) => {
+            if (e) return res.status(400).json({ error: e });
+          });
         }
-      );
-      if (!jogo && item.Number > 4000) {
-        jogo = await WednesdayLotto.create(item).catch((e) => {
-          if (e) throw e;
-        });
       }
     });
     return res.send();

@@ -28,13 +28,17 @@ class OzzLottoController {
 
     const jogos = mainCsvFromString(nomeJogo, data);
     jogos.map(async (item) => {
-      let jogo = await OzzLotto.findOne({ Number: item.Number }).catch((e) => {
-        if (e) throw e;
-      });
-      if (!jogo && item.Number > 1400) {
-        jogo = await OzzLotto.create(item).catch((e) => {
-          if (e) throw e;
-        });
+      if (item.Number > 1400) {
+        let jogo = await OzzLotto.findOne({ Number: item.Number }).catch(
+          (e) => {
+            if (e) return res.status(400).json({ error: e });
+          }
+        );
+        if (!jogo) {
+          jogo = await OzzLotto.create(item).catch((e) => {
+            if (e) return res.status(400).json({ error: e });
+          });
+        }
       }
     });
     return res.send();

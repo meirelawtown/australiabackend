@@ -28,13 +28,15 @@ class SFLifeController {
 
     const jogos = mainCsvFromString(nomeJogo, data);
     jogos.map(async (item) => {
-      let jogo = await SFLife.findOne({ Number: item.Number }).catch((e) => {
-        if (e) throw e;
-      });
-      if (!jogo && item.Number > 2400) {
-        jogo = await SFLife.create(item).catch((e) => {
-          if (e) throw e;
+      if (item.Number > 2400) {
+        let jogo = await SFLife.findOne({ Number: item.Number }).catch((e) => {
+          if (e) return res.status(400).json({ error: e });
         });
+        if (!jogo) {
+          jogo = await SFLife.create(item).catch((e) => {
+            if (e) return res.status(400).json({ error: e });
+          });
+        }
       }
     });
     return res.send();

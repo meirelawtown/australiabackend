@@ -28,15 +28,17 @@ class PowerBallController {
 
     const jogos = mainCsvFromString(nomeJogo, data);
     jogos.map(async (item) => {
-      let jogo = await PowerBallsSchema.findOne({ Number: item.Number }).catch(
-        (e) => {
-          if (e) throw e;
-        }
-      );
-      if (!jogo && item.Number > 1300) {
-        jogo = await PowerBallsSchema.create(item).catch((e) => {
-          if (e) throw e;
+      if (item.Number > 1300) {
+        let jogo = await PowerBallsSchema.findOne({
+          Number: item.Number,
+        }).catch((e) => {
+          if (e) return res.status(400).json({ error: e });
         });
+        if (!jogo) {
+          jogo = await PowerBallsSchema.create(item).catch((e) => {
+            if (e) return res.status(400).json({ error: e });
+          });
+        }
       }
     });
     return res.send();
