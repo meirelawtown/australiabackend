@@ -100,6 +100,7 @@ function verificaFuturoJogos(jogo, json, winCombination) {
   let csvJsonEntrada = converterJsonParaCsv(json);
   let csvFuturo = obterArquivoCsvPassadoOuFuturo(jogo, "futuro");
   var valueToSplice = jogo === "power" ? 7 : 6;
+
   const arr = spliceLongAr(valueToSplice, csvFuturo);
   let result = compareTwoArray(csvJsonEntrada, arr, size);
   return winningCombinantionValidator(
@@ -240,6 +241,8 @@ function winningCombinantionValidator(
       result =
         jogo === "ozz"
           ? filtrarPeloMaisUmOzz(arrayList, myArray)
+          : jogo === "power"
+          ? filtrarPeloMaisUmPB(arrayList, myArray)
           : filtrarPeloMaisUm(arrayList, myArray);
       break;
     default:
