@@ -50,6 +50,7 @@ class SaturdayLottoController {
     const jogos = await SaturdayLotto.find(query)
       .sort({ Number: -1 })
       .limit(20);
+
     return res.json(jogos);
   }
 
